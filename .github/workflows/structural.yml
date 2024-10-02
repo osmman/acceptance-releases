@@ -42,7 +42,7 @@ jobs:
             exit 1
           fi
 
-          echo "snapshot=$SNAPSHOT_FILE" >> $GITHUB_OUTPUT
+          echo "snapshot=$PWD/$SNAPSHOT_FILE" >> $GITHUB_OUTPUT
 
       - name: Clone securesign/structural-tests repository
         run: |
@@ -56,6 +56,5 @@ jobs:
       - name: Run tests
         run: |
           echo "Running tests for ${{ steps.snapshot_path.outputs.snapshot }}"
-          SNAPSHOT="$PWD/${{ steps.snapshot_path.outputs.snapshot }}"
           cd structural-tests
-          go test ./...
+          SNAPSHOT="${{ steps.snapshot_path.outputs.snapshot }}" go test ./...
