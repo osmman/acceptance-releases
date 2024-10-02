@@ -1,0 +1,88 @@
+{
+  "day": "2024-08-26",
+  "time": "15-42-45",
+  "timestamp-authority": {
+    "snapshot_name": "timestamp-authority-hmw9v",
+    "timestamp-authority-image": "quay.io/securesign/timestamp-authority@sha256:d957041e1f10faf087333b9f1d39b2bb4b26edd37a812192e67771c423950def"
+  },
+  "certificate-transparency-go": {
+    "snapshot_name": "certificate-transparency-go-vpxz5",
+    "ctlog-image": "quay.io/securesign/certificate-transparency-go@sha256:053ce379d83675818ddb6f5869bc986d1e210ef8607d081b6b05eb4d4255aa82"
+  },
+  "cli": {
+    "snapshot_name": "cli-8xpv7",
+    "fetch-tsa-certs-cli-image": "quay.io/securesign/fetch-tsa-certs@sha256:8c1eb0d28d72e17413ee06a381c025e8169d00792684c2b3ef651161239a3d60",
+    "gitsign-cli-image": "quay.io/securesign/gitsign@sha256:9958e668ce2068ea6df6370190e70bc7cc4b07a7ae1b04f99912b3f2a549fa24",
+    "client-server-image": "quay.io/securesign/client-server@sha256:c234844ce59fd49960fa84c417872eefaa836559b88cead4ada1b1ffb56c8c21",
+    "client-server-cg-image": "quay.io/securesign/cli-client-server-cg@sha256:3e9e28669ac42dde70ddc86ed0b2d894c233db68f43bb2e1f385a997b6e1e202",
+    "client-server-f-image": "quay.io/securesign/client-server-f@sha256:a255a26cec57c947fa0fec8d7450d4b87ca5f84c96ab8e4121b574d3357e8fc3",
+    "client-server-re-image": "quay.io/securesign/client-server-re@sha256:5b5a4f5c6dcdc10e30dc9090d3a212495cfe49509027d8a41c06b8ffb83d42a3",
+    "cosign-cli-image": "quay.io/securesign/cli-cosign@sha256:4f36debed74761ebd4e2ec4f37220c9d034dfff2087431ed3af25b7c3fb376ff"
+  },
+  "fbc-v4-13": {
+    "snapshot_name": "fbc-v4-13-vtgh5",
+    "fbc-v4-13": "quay.io/securesign/fbc-v4-13@sha256:1176de1ba2fc3226ea9e824e9f0355b02c751c80467dbd74fe08b24d61ad32fa"
+  },
+  "fbc-v4-14": {
+    "snapshot_name": "fbc-v4-14-gz4cx",
+    "fbc-v4-14": "quay.io/securesign/fbc-v4-14@sha256:fee1f73d80a6d7e024f1ee6487107756af972c5b73791912615bb2ac912e645e"
+  },
+  "fbc-v4-15": {
+    "snapshot_name": "fbc-v4-15-7chvh",
+    "fbc-v4-15": "quay.io/securesign/fbc-v4-15@sha256:3f318d979c169204fc87acb360469c6be571b5eeb6bacde28786ef70fca4c397"
+  },
+  "fbc-v4-16": {
+    "snapshot_name": "fbc-v4-16-4hwdv",
+    "fbc-v4-16": "quay.io/securesign/fbc-v4-16@sha256:ada55534bcb5f703012fbf7bbc19c5614028438c99ba870fd1902aaab0301f24"
+  },
+  "fbc-v4-17": {
+    "snapshot_name": "fbc-v4-17-trsfg",
+    "fbc-v4-17": "quay.io/securesign/fbc-v4-17@sha256:f191ad09fce8027a6fd125aefecab40580de8425def079dd14c94f426d642cb1"
+  },
+  "fulcio": {
+    "snapshot_name": "fulcio-tzc9r",
+    "fulcio-server-image": "quay.io/securesign/fulcio-server@sha256:a1f0c021e9e291394eec61fdd07068466d59a58d61c60e27300a9bae49acb648"
+  },
+  "operator": {
+    "snapshot_name": "operator-94vnb",
+    "rhtas-operator-image": "quay.io/securesign/rhtas-operator@sha256:f9aefd93ae4cf894886ee993a94ed62876255121a4c616048d1a79ff2e7a21b2",
+    "rhtas-operator-bundle-image": "quay.io/securesign/rhtas-operator-bundle@sha256:3b2187b998dc432d64dc15a139ccfa067c21cc69f7936c1198eefd9f24ebcda2"
+  },
+  "rekor": {
+    "snapshot_name": "rekor-z8m7h",
+    "rekor-cli-image": "quay.io/securesign/rekor-cli@sha256:3c3d20f3c1671ba37f94e34817ea71b4188726d46b2bb731e4a01caa2cb8e9e0",
+    "rekor-server-image": "quay.io/securesign/rekor-server@sha256:ba9c0c19aaf682f5cb31aa810da9f7be762a965a2840841880d8a74dac2513f6",
+    "backfill-redis-image": "quay.io/securesign/rekor-backfill-redis@sha256:b94f07e8ca990957614d5a942c65400b117663b4b2bfaa4af152fda9cb09130b"
+  },
+  "rekor-search": {
+    "snapshot_name": "rekor-search-mfsz9",
+    "rekor-search-ui-image": "quay.io/securesign/rekor-search-ui@sha256:e01cfb64b011a14a243701a992b7fc3dbc9d7a181bea5cebcfc28593613f7950"
+  },
+  "scaffold": {
+    "snapshot_name": "scaffold-k85px",
+    "ctlog-managectroots-image": "quay.io/securesign/scaffold-ctlog-managectroots@sha256:6604a48ea3c927ea82ba654e9293fbab9bb01db6f2878d16b5a4d88bae8e33a9",
+    "fulcio-createcerts-image": "quay.io/securesign/scaffold-fulcio-createcerts@sha256:8c11dec374c3cede9abd9d3be6813a573a04946576cbd338ebf836828b3849d7",
+    "trillian-createdb-image": "quay.io/securesign/scaffold-trillian-createdb@sha256:5f9822b630afb6385ab721e841f205c31eaffe92e1aebc53a7d3398108d640c5",
+    "trillian-createtree-image": "quay.io/securesign/scaffold-trillian-createtree@sha256:4047beeb5caf7b4e3ec9ccc113439ba90b8aa30f087dae858b6880a40052b146",
+    "tuf-server-image": "quay.io/securesign/scaffold-tuf-server@sha256:982c7774d0cd9e75dc6534a8f4b17ea8dfbd930d11350bc626cc7d6f7b5ed535",
+    "createctconfig-image": "quay.io/securesign/scaffold-createctconfig@sha256:de125b72a957041664a5d3e002124ce6daa548b6923444aec5372e9eb9762131"
+  },
+  "segment-backup-job": {
+    "snapshot_name": "segment-backup-job-2qwnw",
+    "segment-backup-job-image": "quay.io/securesign/segment-backup-job@sha256:c7fa18f6dec1fdd308d5a6ed74f5f6bf2bd30d6759d7d2464875b6e80f269fb2"
+  },
+  "trillian": {
+    "snapshot_name": "trillian-hbhlp",
+    "updatetree-image": "quay.io/securesign/trillian-updatetree@sha256:cde7021f5f15b71469fb4500767c7b119d8bd2d81a335e869cd6bd31708e1448",
+    "createtree-image": "quay.io/securesign/trillian-createtree@sha256:c089ee74ce7781f6ac356ff6959bf4e4f520abc0e08820fe891c65b50c8b1e5b",
+    "trillian-db-image": "quay.io/securesign/trillian-database@sha256:ffa1f4f94eb91169c39e5477c0d10ed3020d5fb792651f7464c6465c9d8f558c",
+    "trillian-log-server-image": "quay.io/securesign/trillian-logserver@sha256:ccf05883ab992fcf6c3058e6d897c4ce85c13aad54a96499ddeff4a5f056a834",
+    "trillian-log-signer-image": "quay.io/securesign/trillian-logsigner@sha256:d438373fc3b53b0e318098fc5587e265c0603d7ab3e11fb9819e747a5e2f18a6",
+    "rekor-redis-image": "quay.io/securesign/trillian-redis@sha256:c89a4891a7054b5cd3774358406ed87eba0ce547dbfd958fb61b0de24140a963"
+  },
+  "tough": {
+    "snapshot_name": "tough-5xzn5",
+    "tuf-tool-image": "quay.io/securesign/cli-tuftool@sha256:5302cef0b2d36c7819e4ded2ebcf16937ae31c901d2d456cccace2669f4cc725",
+    "tuf-image": "quay.io/securesign/tuffer@sha256:410c5b4f6fd4c50adb8c62a59dadfc9dce9de7a0023b58c9c337f297d7aad0f2"
+  }
+}
