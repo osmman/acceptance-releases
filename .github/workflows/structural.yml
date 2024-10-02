@@ -1,0 +1,65 @@
+name: structural
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - '**/snapshot.json'  # Trigger only when snapshot.json files are modified
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - '**/snapshot.json'  # Trigger only when snapshot.json files are modified
+
+  # Allows you to run this workflow manually from the Actions tab    
+  workflow_dispatch:
+    # Define input parameters for manual workflow dispatch
+    inputs:
+      snapshot-path:
+        description: 'Path to the snapshot.json file to run tests on'
+        required: false
+        default: ''
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      - name: Determine snapshot.json path
+        id: snapshot_path
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            # Use the manually provided path from workflow_dispatch event
+            SNAPSHOT_FILE="${{ github.event.inputs.snapshot-path }}"
+          else
+            # Find the modified snapshot.json files in the PR
+            SNAPSHOT_FILE=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | grep 'snapshot.json')
+          fi
+        
+          if [[ -z "$SNAPSHOT_FILE" ]]; then
+            echo "No snapshot.json file found or provided."
+            exit 1
+          fi
+        
+          echo "::set-output name=snapshot_path::$SNAPSHOT_FILE"
+
+      - name: Clone securesign/structural-tests repository
+        run: |
+          git clone https://github.com/securesign/structural-tests.git
+          cd structural-tests
+
+      - name: Setup Go environment
+        uses: actions/setup-go@v5.0.2
+
+      # Run the tests with the modified snapshot.json file path as input
+      - name: Run tests
+        run: |
+          echo "Running tests for ${{ steps.snapshot_path.outputs.snapshot_path }}"
+          SNAPSHOT="$PWD/${{ steps.snapshot_path.outputs.snapshot_path }}"
+          cd structural-tests
+          go test ./...
