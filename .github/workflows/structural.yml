@@ -25,6 +25,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Determine snapshot.json path
         id: snapshot_path
@@ -44,10 +46,10 @@ jobs:
 
           echo "snapshot=$PWD/$SNAPSHOT_FILE" >> $GITHUB_OUTPUT
 
-      - name: Clone securesign/structural-tests repository
-        run: |
-          git clone https://github.com/securesign/structural-tests.git
-          cd structural-tests
+      - uses: actions/checkout@v4
+        with:
+          repository: securesign/structural-tests
+          path: structural-tests
 
       - name: Setup Go environment
         uses: actions/setup-go@v5.0.2
