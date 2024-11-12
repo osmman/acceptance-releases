@@ -10,41 +10,54 @@ on:
   workflow_dispatch:
     # Define input parameters for manual workflow dispatch
     inputs:
-      snapshot-path:
+      snapshot-paths:
         description: 'Path to the snapshot.json file to run tests on'
         required: false
         default: ''
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  structural:
-    # The type of runner that the job will run on
+  determine_snapshots:
     runs-on: ubuntu-latest
+    outputs:
+      snapshots: ${{ steps.set-snapshots.outputs.snapshots }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+      - name: Determine snapshot.json paths
+        id: set-snapshots
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            SNAPSHOT_FILES="${{ github.event.inputs.snapshot-paths }}"
+          else
+            SNAPSHOT_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | grep 'snapshot.json')
+          fi
+
+          if [[ -z "$SNAPSHOT_FILES" ]]; then
+            echo "No snapshot.json files found or provided."
+            exit 1
+          fi
+
+          SNAPSHOT_ARRAY=()
+          for file in $SNAPSHOT_FILES; do
+            SNAPSHOT_ARRAY+=("\"$file\"")
+          done
+
+          echo "snapshots=[${SNAPSHOT_ARRAY[*]}]" >> $GITHUB_OUTPUT
+
+  structural_tests:
+    needs: determine_snapshots
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        snapshot: ${{ fromJson(needs.determine_snapshots.outputs.snapshots) }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Determine snapshot.json path
-        id: snapshot_path
-        run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            # Use the manually provided path from workflow_dispatch event
-            SNAPSHOT_FILE="${{ github.event.inputs.snapshot-path }}"
-          else
-            # Find the modified snapshot.json files in the PR
-            SNAPSHOT_FILE=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | grep 'snapshot.json')
-          fi
-        
-          if [[ -z "$SNAPSHOT_FILE" ]]; then
-            echo "No snapshot.json file found or provided."
-            exit 1
-          fi
-
-          echo "snapshot=$PWD/$SNAPSHOT_FILE" >> $GITHUB_OUTPUT
 
       - uses: actions/checkout@v4
         with:
@@ -57,6 +70,6 @@ jobs:
       # Run the tests with the modified snapshot.json file path as input
       - name: Run tests
         run: |
-          echo "Running tests for ${{ steps.snapshot_path.outputs.snapshot }}"
+          echo "Running tests for ${{ matrix.snapshot }}"
           cd structural-tests
-          SNAPSHOT="${{ steps.snapshot_path.outputs.snapshot }}" go test ./...
+          SNAPSHOT="${{ matrix.snapshot }}" go test ./...
