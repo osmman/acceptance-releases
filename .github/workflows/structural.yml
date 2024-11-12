@@ -40,12 +40,8 @@ jobs:
             exit 1
           fi
 
-          SNAPSHOT_ARRAY=()
-          for file in $SNAPSHOT_FILES; do
-            SNAPSHOT_ARRAY+=("\"$file\"")
-          done
-
-          echo "snapshots=[${SNAPSHOT_ARRAY[*]}]" >> $GITHUB_OUTPUT
+          SNAPSHOT_JSON=$(printf '%s\n' "${SNAPSHOT_FILES[@]}" | jq -R . | jq -s -c .)
+          echo "snapshots=$SNAPSHOT_JSON" >> $GITHUB_OUTPUT
 
   structural_tests:
     needs: determine_snapshots
@@ -67,9 +63,22 @@ jobs:
       - name: Setup Go environment
         uses: actions/setup-go@v5.0.2
 
+      - name: Parse version and channel
+        id: parse
+        run: |
+          FILE_PATH="${{ matrix.snapshot }}"
+          VERSION=$(echo $FILE_PATH | cut -d'/' -f1)
+          CHANNEL=$(echo $FILE_PATH | cut -d'/' -f2)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "channel=$CHANNEL" >> $GITHUB_OUTPUT
+
       # Run the tests with the modified snapshot.json file path as input
       - name: Run tests
+        env:
+          SNAPSHOT: "../${{ matrix.snapshot }}"
+          VERSION: "${{ steps.parse.outputs.version }}"
+          CHANNEL: "${{ steps.parse.outputs.channel }}"
         run: |
           echo "Running tests for ${{ matrix.snapshot }}"
           cd structural-tests
-          SNAPSHOT="${{ matrix.snapshot }}" go test ./...
+          go test ./...
